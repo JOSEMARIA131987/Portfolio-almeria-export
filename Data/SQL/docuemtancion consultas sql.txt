@@ -1,0 +1,96 @@
+# Documentación de Consultas SQL – Portfolio Exportaciones Hortofrutícolas Almería
+
+Este README describe las consultas SQL utilizadas para analizar los datos de exportaciones de productos hortofrutícolas desde Almería (2015‑2024).  
+Todas las consultas están guardadas en la carpeta `Data/SQL`.
+
+---
+
+## Consultas Básicas
+
+### 01_exportaciones_totales_por_año.sql
+**Objetivo:** Obtener el total de exportaciones por año.  
+**Cómo funciona:** Agrupa la tabla `exportaciones` por año y suma `value_eur`.  
+**Ejemplo de resultado:**
+
+| year | total_export  |
+|------|---------------|
+| 2015 | 1.2e9         |
+| 2016 | 1.3e9         |
+
+---
+
+### 02_top_productos.sql
+**Objetivo:** Obtener el total de exportaciones por producto y año.  
+**Cómo funciona:** Agrupa por producto y año, suma `value_eur` y ordena por valor.  
+**Ejemplo de resultado:**
+
+| year | product   | valor_total_expor |
+|------|-----------|-----------------|
+| 2015 | PIMIENTO  | 2.1e8           |
+| 2015 | TOMATE    | 1.8e8           |
+
+---
+
+### 03_top_paises.sql
+**Objetivo:** Obtener el total de exportaciones por país y año.  
+**Cómo funciona:** Agrupa por país y año, suma `value_eur` y ordena por valor.  
+**Ejemplo de resultado:**
+
+| year | destination_country | valor_total_expor |
+|------|-------------------|-----------------|
+| 2015 | ALEMANIA           | 3.5e8           |
+| 2015 | FRANCIA            | 3.0e8           |
+
+---
+
+## Consultas Avanzadas
+
+### 04_top_producto_por_año.sql
+**Objetivo:** Identificar el producto con mayor valor de exportación en cada año.  
+**Cómo funciona:**  
+- Agrupa por año y producto y suma `value_eur`.  
+- Asigna un ranking a cada producto dentro de cada año usando `ROW_NUMBER()`.  
+- Filtra solo los productos con `ranking = 1`.  
+**Ejemplo de resultado:**
+
+| year | product   | valor_total_expor |
+|------|-----------|-----------------|
+| 2015 | PIMIENTO  | 2.1e8           |
+| 2016 | TOMATE    | 1.9e8           |
+
+---
+
+### 05_crecimiento_interanual.sql
+**Objetivo:** Calcular el crecimiento anual de las exportaciones.  
+**Cómo funciona:**  
+- Suma `value_eur` por año.  
+- Usa la función `LAG()` para obtener el valor del año anterior.  
+- Calcula la diferencia en euros y el porcentaje de crecimiento respecto al año anterior.  
+**Ejemplo de resultado:**
+
+| year | total_export | valor_anterior | crecimiento_eur | crecimiento_pct |
+|------|--------------|----------------|----------------|----------------|
+| 2015 | 1.2e9        | NULL           | NULL           | NULL           |
+| 2016 | 1.3e9        | 1.2e9          | 1.0e8          | 8.3            |
+
+---
+
+### 06_participacion_producto.sql
+**Objetivo:** Calcular el porcentaje que representa cada producto dentro del total anual de exportaciones.  
+**Cómo funciona:**  
+- Suma `value_eur` por producto y año.  
+- Usa `SUM() OVER (PARTITION BY year)` para calcular el total anual.  
+- Calcula el porcentaje de participación de cada producto.  
+**Ejemplo de resultado:**
+
+| year | product   | valor_total | porcentaje_participacion |
+|------|-----------|------------|--------------------------|
+| 2015 | PIMIENTO  | 2.1e8      | 17.5                     |
+| 2015 | TOMATE    | 1.8e8      | 15.0                     |
+
+---
+
+**Notas finales:**  
+- Todas las consultas se pueden ejecutar directamente en PostgreSQL.  
+- Sirven como base para análisis en Power BI o Python.  
+- Las funciones `ROW_NUMBER()` y `LAG()` permiten análisis avanzados tipo BI.  

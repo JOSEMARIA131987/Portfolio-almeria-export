@@ -1,0 +1,38 @@
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Datos (si son muy grandes o sensibles)
+# data/raw/*.xlsx
+# data/raw/*.csv
+
+# Base de datos local
+*.db
+*.sqlite
+
+# Power BI
+*.pbix
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos temporales
+*.tmp
+~$*
